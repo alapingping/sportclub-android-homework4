@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sports.sportclub.Adapter.MySimpleAdapter;
 import com.sports.sportclub.R;
 
 import java.util.ArrayList;
@@ -44,12 +47,40 @@ public class CoachsFragment extends Fragment {
         //设置SimpleAdapter
         SimpleAdapter adapter=new SimpleAdapter(getActivity(),DataList(),R.layout.coach_item,
                 new String[]{"coach_photo","coach_name","coach_introduction"},
-                new int[]{R.id.coach_photo_image,R.id.coach_name_text,R.id.coach_introduction_text});
+                new int[]{R.id.coach_photo_image,R.id.coach_name_text,R.id.coach_introduction_text}){
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                convertView = null;
+
+                convertView = super.getView(position, convertView, parent);
+
+                ImageButton goodBtn = convertView.findViewById(R.id.GoodButton);
+
+                TextView textView = convertView.findViewById(R.id.coach_name_text);
+                String coach_name = textView.getText().toString();
+                String show_msg = "你收藏了" + coach_name;
+                goodBtn.setOnClickListener(v -> {
+                    Toast.makeText(getContext(),show_msg,Toast.LENGTH_LONG).show();
+                });
+
+                ImageButton collectBtn = convertView.findViewById(R.id.collectButton);
+                String show_msg2 = "你点赞了" + coach_name;
+
+                collectBtn.setOnClickListener(v ->{
+                    Toast.makeText(getContext(),show_msg2,Toast.LENGTH_LONG).show();
+                });
+
+                return convertView;
+            }
+
+
+        };
 
 
         listView.setAdapter(adapter);
         return view;
-    }
+        }
 
     //填充数据列表
     public List<Map<String,Object>> DataList(){
@@ -103,7 +134,7 @@ public class CoachsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "1", Toast.LENGTH_SHORT).show();
 
             }
         });

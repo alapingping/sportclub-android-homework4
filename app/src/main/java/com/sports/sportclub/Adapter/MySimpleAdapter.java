@@ -34,6 +34,9 @@ public class MySimpleAdapter extends SimpleAdapter {
         super(context, data, resource, from, to);
     }
 
+
+
+
     @Override
     public View getView(int position, final View contentView, ViewGroup parent) {
 
@@ -42,9 +45,9 @@ public class MySimpleAdapter extends SimpleAdapter {
 
 
 
+
         return contentView;
     }
-
 
 }
 
