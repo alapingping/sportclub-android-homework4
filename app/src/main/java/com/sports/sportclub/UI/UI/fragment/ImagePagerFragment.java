@@ -1,10 +1,10 @@
 package com.sports.sportclub.UI.UI.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.SharedElementCallback;
-import android.support.v4.view.ViewPager;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.core.app.SharedElementCallback;
+import androidx.viewpager.widget.ViewPager;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
@@ -66,7 +66,7 @@ public class ImagePagerFragment extends Fragment {
                         // visible). To locate the fragment, call instantiateItem with the selection position.
                         // At this stage, the method will simply return the fragment at the position and will
                         // not create a new one.
-                        android.support.v4.app.Fragment currentFragment = (android.support.v4.app.Fragment) viewPager.getAdapter()
+                        Fragment currentFragment = (Fragment) viewPager.getAdapter()
                                 .instantiateItem(viewPager, navigationActivity.currentPosition);
                         View view = currentFragment.getView();
                         if (view == null) {

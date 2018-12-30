@@ -1,6 +1,6 @@
 package com.sports.sportclub.Data;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 import com.sports.sportclub.R;
 

@@ -1,23 +1,20 @@
 package com.sports.sportclub.UI.UI.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.sports.sportclub.DataModel.User;
 import com.sports.sportclub.R;
 import com.sports.sportclub.api.BmobService;
@@ -28,18 +25,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobUser;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Subscription;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -199,7 +191,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        Intent intent = new Intent(this,navigationActivity.class);
+        Intent intent = new Intent(this, navigationActivity.class);
         //intent.putExtra("username",username);
         intent.putExtra("user",current_user);
         startActivity(intent);

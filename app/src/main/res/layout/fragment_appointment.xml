@@ -1,4 +1,4 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -50,7 +50,7 @@
         <!--app:layout_constraintTop_toTopOf="parent"-->
         <!--app:layout_constraintVertical_bias="0.638" />-->
 
-    <android.support.v7.widget.AppCompatAutoCompleteTextView
+    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/autoinput"/>
@@ -85,4 +85,4 @@
         app:layout_constraintVertical_bias="0.501" />
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

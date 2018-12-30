@@ -19,30 +19,22 @@ import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.baidu.navisdk.adapter.BaiduNaviManagerFactory;
-import com.baidu.navisdk.adapter.IBaiduNaviManager;
 
 //注意AlertDialog不能导入v7的包，不然会报找不到资源的错误
 import android.app.AlertDialog;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.location.BDAbstractLocationListener;
@@ -70,15 +62,11 @@ import com.sports.sportclub.R;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 import com.sports.sportclub.overlayutil.PoiOverlay;
-import com.sports.sportclub.overlayutil.OverlayManager;
 import com.sports.sportclub.overlayutil.BikingRouteOverlay;
 import com.sports.sportclub.overlayutil.DrivingRouteOverlay;
 import com.sports.sportclub.overlayutil.WalkingRouteOverlay;
-
-import static cn.bmob.v3.Bmob.getApplicationContext;
 
 
 /**

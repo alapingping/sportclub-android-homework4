@@ -1,8 +1,19 @@
 package com.sports.sportclub.UI.UI.fragment;
 
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +24,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sports.sportclub.Adapter.MySimpleAdapter;
+import com.sports.sportclub.Data.Coach;
+import com.sports.sportclub.Data.SimpleDatabase;
 import com.sports.sportclub.R;
+import com.sports.sportclub.provider.SimpleContentProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,8 +39,17 @@ import java.util.Map;
  */
 public class CoachsFragment extends Fragment {
 
+    public static final int LOADER_COACHES = 1;
+
     private ListView listView;
     private View view;
+    private SimpleAdapter adapter;
+
+    //create cursor for contentprovider
+    private Cursor mCursor;
+
+    //data source for adapter
+    private List<Map<String,Object>> list;
 
     public CoachsFragment() {
         // Required empty public constructor
@@ -42,10 +64,15 @@ public class CoachsFragment extends Fragment {
 
         //获取当前View
         View view = inflater.inflate(R.layout.fragment_coachs,container,false);
+
+        //get internet status
+        boolean hasInternet = isNetworkConnected(getContext());
+
         //再通过View获取ListView
         listView = view.findViewById(R.id.coach_list);
         //设置SimpleAdapter
-        SimpleAdapter adapter=new SimpleAdapter(getActivity(),DataList(),R.layout.coach_item,
+        list = DataList(hasInternet);
+        adapter = new SimpleAdapter(getActivity(),list,R.layout.coach_item,
                 new String[]{"coach_photo","coach_name","coach_introduction"},
                 new int[]{R.id.coach_photo_image,R.id.coach_name_text,R.id.coach_introduction_text}){
 
@@ -76,49 +103,71 @@ public class CoachsFragment extends Fragment {
 
 
         };
-
-
+        //set adapter
         listView.setAdapter(adapter);
+
+        //create loader callback
+        LoaderManager.LoaderCallbacks<Cursor> mLoaderCallback = new LoaderManager.LoaderCallbacks<Cursor>() {
+            @NonNull
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+                switch (id){
+                    case LOADER_COACHES:
+                        return new CursorLoader(getActivity().getApplicationContext(),
+                                SimpleContentProvider.URI_COACH,
+                                new String[]{Coach.COLUMN_NAME},
+                                null, null, null);
+                        default:
+                            throw new IllegalArgumentException();
+                }
+            }
+
+            @Override
+            public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+                switch (loader.getId()){
+                    case LOADER_COACHES:
+                        mCursor = data;
+                        setData();
+                        System.out.print("set data");
+                        break;
+                }
+            }
+
+            @Override
+            public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+                return ;
+            }
+        };
+
+        //begin loader
+        getActivity().getSupportLoaderManager().initLoader(LOADER_COACHES, null, mLoaderCallback);
+
         return view;
-        }
+    }
 
     //填充数据列表
-    public List<Map<String,Object>> DataList(){
+    public List<Map<String,Object>> DataList(boolean hasInternet){
+
+        List<String> coachNames = new ArrayList<>();
+        if(hasInternet){
+            coachNames.add("Sun Yang");
+            coachNames.add("Sun Shou");
+        } else{
+            coachNames.add("Sun Yang");
+            coachNames.add("Sun Shou");
+        }
+
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("coach_photo",R.drawable.coach_6);
-        map.put("coach_name","Sun Yang");
+        map.put("coach_name",coachNames.get(0));
         map.put("coach_introduction","champion coach");
         list.add(map);
 
         map = new HashMap<String, Object>();
-        map.put("coach_photo",R.drawable.coach_1);
-        map.put("coach_name","Zhang Yongping");
-        map.put("coach_introduction","beauty coach");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("coach_photo",R.drawable.coach_2);
-        map.put("coach_name","Li Xingyuan");
-        map.put("coach_introduction","exercise coach");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("coach_photo",R.drawable.coach_3);
-        map.put("coach_name","He Yalun");
-        map.put("coach_introduction","basketball coach");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("coach_photo",R.drawable.coach_4);
-        map.put("coach_name","Zhao Zihan");
-        map.put("coach_introduction","tennis coach");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
         map.put("coach_photo",R.drawable.coach_5);
-        map.put("coach_name","Sun Shou");
+        map.put("coach_name",coachNames.get(1));
         map.put("coach_introduction","fat coach");
         list.add(map);
         return list;
@@ -126,7 +175,6 @@ public class CoachsFragment extends Fragment {
 
     @Override
     public void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
 
         ListView listView = getActivity().findViewById(R.id.coach_list);
@@ -139,5 +187,30 @@ public class CoachsFragment extends Fragment {
             }
         });
     }
+
+    /**
+     * 判断网络状态
+     * @param context
+     * @return boolean
+     */
+    public boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+
+    public void setData(){
+        String name;
+        if(mCursor != null)
+            name = mCursor.getString(mCursor.getColumnIndexOrThrow(Coach.COLUMN_NAME));
+        return ;
+    }
+
 
 }

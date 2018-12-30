@@ -1,10 +1,10 @@
 package com.sports.sportclub.Adapter;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +38,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ImageViewHolde
     private final RequestManager requestManager;
     private final ViewHolderListener viewHolderListener;
 
-    public GridAdapter(android.support.v4.app.Fragment fragment) {
+    public GridAdapter(Fragment fragment) {
         this.requestManager = Glide.with(fragment);
         this.viewHolderListener = new ViewHolderListernerImp(fragment);
     }
